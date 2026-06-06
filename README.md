@@ -65,7 +65,8 @@ nmap -sC -sV -T4 10.49.159.122
 
 **Screenshot:**
 
-![Nmap Scan](lian%20yu/1.png)
+<img width="722" height="552" alt="1" src="https://github.com/user-attachments/assets/f4a43818-5a65-4e34-9e79-5eac38a5dbfa" />
+
 
 **Open Ports:**
 
@@ -86,7 +87,8 @@ nmap -sC -sV -T4 10.49.159.122
 
 Navigating to `http://10.49.159.122` showed an **ARROWVERSE** themed page with a story about Oliver Queen.
 
-![Homepage](lian%20yu/2.png)
+<img width="932" height="822" alt="2" src="https://github.com/user-attachments/assets/c2ba3199-25ce-4760-b869-eea2f9b9a4ef" />
+
 
 ### Directory Bruteforce
 
@@ -94,7 +96,8 @@ Navigating to `http://10.49.159.122` showed an **ARROWVERSE** themed page with a
 gobuster dir -u http://10.49.159.122 -w /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt
 ```
 
-![Gobuster](lian%20yu/3.png)
+<img width="723" height="523" alt="3" src="https://github.com/user-attachments/assets/864c925b-c1c1-4a70-92b0-551abf8f61eb" />
+
 
 **Found:** `/island` (Status: 301)
 
@@ -102,7 +105,8 @@ gobuster dir -u http://10.49.159.122 -w /usr/share/wordlists/dirbuster/directory
 
 Navigating to `http://10.49.159.122/island` showed a page with the codeword hidden.
 
-![Island page](lian%20yu/4.png)
+<img width="956" height="282" alt="4" src="https://github.com/user-attachments/assets/d5122bf9-dd6a-4733-a25e-66919e4d28ae" />
+
 
 ### Viewing Page Source
 
@@ -114,7 +118,8 @@ Checking the page source (`Ctrl+U`) revealed the **codeword hidden in white-colo
 
 Also found an HTML comment: `<!-- go!go!go! -->`
 
-![Page source](lian%20yu/5.png)
+<img width="950" height="492" alt="5" src="https://github.com/user-attachments/assets/eee1328f-b590-4ef7-9e4c-2198b6cd0564" />
+
 
 > **Codeword (FTP Username): `vigilante`**
 
@@ -128,7 +133,8 @@ Running Gobuster again on `/island` with `.ticket` extension:
 gobuster dir -u http://10.49.159.122/island -w /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt -x .ticket
 ```
 
-![Gobuster ticket](lian%20yu/6.png)
+<img width="715" height="322" alt="6" src="https://github.com/user-attachments/assets/af47589d-a52b-429f-8021-ce05acc090a8" />
+
 
 **Found:** `/island/2100` (Status: 301)
 
@@ -136,17 +142,20 @@ gobuster dir -u http://10.49.159.122/island -w /usr/share/wordlists/dirbuster/di
 
 The page showed an embedded YouTube video titled **"How Oliver Queen finds his way to Lian_Yu?"**
 
-![2100 page](lian%20yu/7.png)
+<img width="956" height="672" alt="7" src="https://github.com/user-attachments/assets/c14a760d-0c58-4f45-9f24-80c8e14a99d8" />
+
 
 Checking page source revealed a hint: `<!-- you can avail your .ticket here but how? -->`
 
-![2100 source](lian%20yu/8.png)
+<img width="956" height="376" alt="8" src="https://github.com/user-attachments/assets/46b8b465-33a0-467c-8307-db7a9934f4a7" />
+
 
 ### Accessing the Ticket File
 
 Navigating directly to `http://10.49.159.122/island/2100/green_arrow.ticket`:
 
-![Ticket](lian%20yu/9.png)
+<img width="956" height="192" alt="9" src="https://github.com/user-attachments/assets/bc8fa2b9-abb4-4a0f-8685-db884638ffde" />
+
 
 **Token found:** `RTy8yhBQdscX`
 
@@ -162,7 +171,8 @@ The token `RTy8yhBQdscX` is **Base58 encoded**. Decoded using:
 echo "RTy8yhBQdscX" | base58 -d
 ```
 
-![Base58 decode](lian%20yu/10.png)
+<img width="358" height="62" alt="10" src="https://github.com/user-attachments/assets/01771b8c-ae4b-4991-b0c6-47633647ddbd" />
+
 
 > **FTP Password: `!#th3h00d`**
 
@@ -178,7 +188,8 @@ ftp 10.49.159.122
 # Password: !#th3h00d
 ```
 
-![FTP login and listing](lian%20yu/11.png)
+<img width="636" height="422" alt="11" src="https://github.com/user-attachments/assets/080b2811-6c88-45db-b9cd-c012b18ca72f" />
+
 
 **Files found:**
 - `Leave_me_alone.png` (511720 bytes)
@@ -193,7 +204,8 @@ get Queen's_Gambit.png
 get aa.jpg
 ```
 
-![FTP download](lian%20yu/12.png)
+<img width="721" height="352" alt="12" src="https://github.com/user-attachments/assets/3e366a4f-8df6-4fb0-8fd7-6e0d26b146d9" />
+
 
 ---
 
@@ -210,7 +222,8 @@ binwalk Queen\'s_Gambit.png
 binwalk aa.jpg
 ```
 
-![File check](lian%20yu/13.png)
+<img width="795" height="627" alt="13" src="https://github.com/user-attachments/assets/95a0ec11-3f83-4d21-a2f9-752ce1039704" />
+
 
 **Key finding:** `Leave_me_alone.png` showed as **"data"** instead of a PNG — its magic bytes were corrupted!
 
@@ -220,7 +233,7 @@ binwalk aa.jpg
 xxd Leave_me_alone.png | head -5
 ```
 
-![xxd output](lian%20yu/14.png)
+<img width="575" height="140" alt="14" src="https://github.com/user-attachments/assets/1c7ab78d-6992-4a8b-bb01-74fa8e346233" />
 
 The file header was `58 45 0a 0d` instead of the correct PNG magic bytes `89 50 4E 47 0D 0A 1A 0A`.
 
@@ -231,7 +244,8 @@ printf '\x89\x50\x4e\x47\x0d\x0a\x1a\x0a' | dd of=Leave_me_alone.png bs=1 seek=0
 file Leave_me_alone.png
 ```
 
-![Fixed PNG](lian%20yu/15.png)
+<img width="736" height="167" alt="15" src="https://github.com/user-attachments/assets/382f8486-eb71-4d89-ba7b-3a3c19c5ed2b" />
+
 
 File now correctly identified as: `PNG image data, 845 x 475, 8-bit/color RGBA`
 
@@ -239,7 +253,8 @@ File now correctly identified as: `PNG image data, 845 x 475, 8-bit/color RGBA`
 
 Opening `Leave_me_alone.png` revealed the **steghide passphrase** written in the image:
 
-![Leave me alone image](lian%20yu/16.png)
+<img width="955" height="873" alt="16" src="https://github.com/user-attachments/assets/fcea479e-7be5-4d3b-a90f-9055f71b3977" />
+
 
 > **Steghide Passphrase: `password`**
 
@@ -249,7 +264,8 @@ Opening `Leave_me_alone.png` revealed the **steghide passphrase** written in the
 steghide extract -sf aa.jpg -p "password"
 ```
 
-![Steghide extract](lian%20yu/17.png)
+<img width="307" height="82" alt="17" src="https://github.com/user-attachments/assets/6822bbc7-d9b1-43dd-9b12-9887965d0f64" />
+
 
 **Extracted:** `ss.zip`
 
@@ -259,7 +275,8 @@ steghide extract -sf aa.jpg -p "password"
 unzip ss.zip
 ```
 
-![Unzip](lian%20yu/18.png)
+<img width="282" height="96" alt="18" src="https://github.com/user-attachments/assets/7316ef4d-d4de-4426-813b-f0e8c54a9114" />
+
 
 **Files extracted:** `passwd.txt` and `shado`
 
@@ -270,7 +287,8 @@ cat passwd.txt
 cat shado
 ```
 
-![Cat files](lian%20yu/19.png)
+<img width="632" height="355" alt="19" src="https://github.com/user-attachments/assets/93f4f956-d631-449e-a36a-22607845d11e" />
+
 
 - `passwd.txt` — A decoy story about Oliver Queen on the island
 - `shado` — Contains the SSH password: **`M3tahuman`**
@@ -289,7 +307,8 @@ ssh slade@10.49.159.122
 
 Accepted the host fingerprint and logged in successfully with the **WELCOME2 LIAN_YU** banner:
 
-![SSH login](lian%20yu/20.png)
+<img width="712" height="527" alt="20" src="https://github.com/user-attachments/assets/aef7f148-107c-4b46-9500-7947d4a2e731" />
+
 
 ### Getting the User Flag
 
@@ -298,7 +317,8 @@ ls
 cat user.txt
 ```
 
-![User flag](lian%20yu/21.png)
+<img width="382" height="127" alt="21" src="https://github.com/user-attachments/assets/25519d1b-0bf1-4f9e-882d-cbbb8b43953b" />
+
 
 > **User Flag: `THM{P30P7E_K33P_53CRET5__C0MPUT3R5_D0N'T}`**  
 > *— Felicity Smoak*
@@ -313,7 +333,6 @@ cat user.txt
 sudo -l
 ```
 
-![Sudo -l](lian%20yu/22.png)
 
 **Output:**
 ```
@@ -335,7 +354,8 @@ Got a root shell immediately! Then read the root flag:
 cat /root/root.txt
 ```
 
-![Root flag](lian%20yu/22.png)
+<img width="742" height="406" alt="22" src="https://github.com/user-attachments/assets/8f170aa5-92b7-4276-abb7-488d0fce905d" />
+
 
 > **Root Flag: `THM{MY_W0RD_I5_MY_B0ND_IF_I_ACC3PT_YOUR_CONTRACT_THEN_IT_WILL_BE_COMPL3TED_OR_I'LL_BE_D34D}`**  
 > *— DEATHSTROKE*
